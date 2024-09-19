@@ -8,7 +8,9 @@ The Patient Care Application helps assign caretakers to patients, improving pers
 **Key Features**
 
 Patients: Manage profiles, schedule appointments, and give feedback.
+
 Healthcare Carers: Update profiles and view schedules.
+
 Managers: Oversee profiles and use smart scheduling.
 
 
@@ -16,5 +18,7 @@ Managers: Oversee profiles and use smart scheduling.
 Create an app that:
 
 Ensures timely care for patients.
+
 Helps carers manage their schedules.
+
 Provides managers with easy oversight tools.
