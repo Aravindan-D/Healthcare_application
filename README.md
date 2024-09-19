@@ -13,12 +13,3 @@ Healthcare Carers: Update profiles and view schedules.
 
 Managers: Oversee profiles and use smart scheduling.
 
-
-**Goals**
-Create an app that:
-
-Ensures timely care for patients.
-
-Helps carers manage their schedules.
-
-Provides managers with easy oversight tools.
