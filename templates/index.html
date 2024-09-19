@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <ul>
+            <li><a href="#profile-management" class="active">Profile Management</a></li>
+            <li><a href="#daily-schedule">Daily Schedule</a></li>
+            <li><a href="#patient-notes">Patient Notes</a></li>
+            <li><a href="{{ url_for('logout') }}" class="logout-link">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Dashboard Menu</h2>
+            <ul>
+                <li><a href="#profile-management">Profile Management</a></li>
+                <li><a href="#daily-schedule">Daily Schedule</a></li>
+                <li><a href="#patient-notes">Patient Notes</a></li>
+            </ul>
+        </div>
+
+        <!-- Container for Sections -->
+        <div class="container">
+            <!-- Profile Management Section -->
+            <section id="profile-management" class="section">
+                <h1>Profile Management</h1>
+                <form action="{{ url_for('update_profile_carer') }}" method="POST">
+                    <div class="form-group">
+                        <label for="availability">Availability:</label>
+                        <input type="text" id="availability" name="availability" value="{{ profile.availability }}" required>
+                        <input type="hidden" id="user_name" name="user_name" value="{{ username }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skills">Skills:</label>
+                        <textarea id="skills" name="skills" required>{{ profile.skills }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="qualifications">Qualifications:</label>
+                        <textarea id="qualifications" name="qualifications" required>{{ profile.qualifications }}</textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Update Profile</button>
+                </form>
+            </section>
+
+            <!-- Daily Schedule Section -->
+            <section id="daily-schedule" class="section">
+                <h1>Daily Schedule</h1>
+                <ul class="schedule-list">
+                    {% for schedule in schedules %}
+                    <li>{{ schedule.date }} - {{ schedule.time }}: Visit patient {{ schedule.patient_id }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <!-- Patient Notes Section -->
+            <section id="patient-notes" class="section">
+                <h1>Patient Notes</h1>
+                <form action="{{ url_for('add_patient_note') }}" method="POST">
+                    <div class="form-group">
+                        <label for="patient_id">Patient ID:</label>
+                        <input type="number" id="patient_id" name="patient_id" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="note">Note:</label>
+                        <textarea id="note" name="note" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Add Note</button>
+                </form>
+            </section>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2024 Carer Dashboard. All rights reserved.</p>
+    </div>
+</body>
+</html>
