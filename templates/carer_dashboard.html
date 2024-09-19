@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manager Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a href="#" data-section="profile-management"><i class="fas fa-user-cog"></i> Profile Management</a></li>
+                <li><a href="#" data-section="daily-schedule"><i class="fas fa-calendar"></i> Daily Schedule</a></li>
+                <li><a href="#" data-section="patient-notes"><i class="fas fa-file-medical"></i> Patient Notes</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+             <!-- Navbar -->
+             <div class="navbar">
+                <ul>
+                    <li class="navtext"><a href="#" data-section="manager">Dashboard</a></li>
+                    <li class="logout"><a href="{{ url_for('logout') }}"><img src="../assets/logout.png" alt="">Logout</a></li>
+                </ul>
+            </div>
+
+            <div class="welcomesection">
+                <h1>Welcome, {{ username }}</h1>
+                <p>This is the Carer dashboard.</p>
+            </div>
+
+            <!-- Profile Management Section -->
+            <section id="profile-management" class="section">
+                <h2>Profile Management</h2>
+                <form action="{{ url_for('update_profile_carer') }}" method="POST">
+                    <div class="form-group">
+                        <label for="availability">Availability:</label>
+                        <input type="text" id="availability" name="availability" value="{{ profile.availability }}" required>
+                        <input type="hidden" id="user_name" name="user_name" value="{{ username }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skills">Skills:</label>
+                        <textarea id="skills" name="skills" required>{{ profile.skills }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="qualifications">Qualifications:</label>
+                        <textarea id="qualifications" name="qualifications" required>{{ profile.qualifications }}</textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Update Profile</button>
+                </form>
+            </section>
+
+            <!-- Daily Schedule Section -->
+            <section id="daily-schedule" class="section">
+                <h2>Daily Schedule</h2>
+                <ul class="schedule-list">
+                    {% for schedule in schedules %}
+                    <li>{{ schedule.date }} - {{ schedule.time }}: Visit patient {{ schedule.patient_id }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <!-- Patient Notes Section -->
+            <section id="patient-notes" class="section">
+                <h2>Patient Notes</h2>
+                <form action="{{ url_for('add_patient_note') }}" method="POST">
+                    <div class="form-group">
+                        <label for="patient_id">Patient ID:</label>
+                        <input type="number" id="patient_id" name="patient_id" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="note">Note:</label>
+                        <textarea id="note" name="note" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Add Note</button>
+                </form>
+            </section>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.sidebar a, .navbar a');
+            const sections = document.querySelectorAll('.section');
+    
+            function showSection(id) {
+                sections.forEach(section => {
+                    if (section.id === id) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+    
+            function setActiveLink(id) {
+                links.forEach(link => {
+                    const sectionId = link.getAttribute('data-section') || link.getAttribute('href').substring(1);
+                    if (sectionId === id) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+    
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('data-section') || link.getAttribute('href').substring(1);
+                    showSection(sectionId);
+                    setActiveLink(sectionId);
+                });
+            });
+    
+            // Show the first section by default and highlight the corresponding link
+            if (sections.length > 0) {
+                const defaultSectionId = sections[0].id;
+                showSection(defaultSectionId);
+                setActiveLink(defaultSectionId);
+            }
+        });
+    </script>
+
+</body>
+</html>
